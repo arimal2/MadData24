@@ -31,17 +31,20 @@ def addClassToCSV(df, fileName, count, name, location, coords):
 
 def main():
     API_KEY = "AIzaSyBLM_O7mDQ3QxDWRK8rO6L4o-wlgii27k0"
+    map_client = googlemaps.Client(API_KEY)
     fileName = "C:\\Users\\yanna\\OneDrive\\Desktop\\MadData2025\\locations.csv"
     locsCount = 0
     headers = ["Class", "Location", "Coordinates"]
+    restaurant_dict = {}
     df = pd.DataFrame(columns=headers) 
+    
 
     quit = False
     while not quit:
         name = input("Enter a class name (or 'quit' to finish): ") 
         if name.lower() == "quit":
             break
-        loc = input(f"Enter the location forH {name}: ")
+        loc = input(f"Enter the location for {name}: ")
         coords = get_place_location(API_KEY, loc)
         if coords is None:
             print("Error: location not found")
@@ -54,7 +57,18 @@ def main():
     print(classes)
 
     for i in range (len(classes) - 1):
-        first = a
+        startLoc = df["Location"].iloc[i]
+        endLoc = df["Location"].iloc[i + 1]
+
+        route_points = polyline.decode(get_route(API_KEY, df["Location"].iloc[i], df["Location"].iloc[i + 1]))
+
+        for point in route_points[::2]:
+            point_coord = (point[0], point[1])
+            restaurants_nearby = map_client.places_nearby(location=point_coord, radius=500, type="restaurant")
+            for restaurant in restaurants_nearby['results']:
+                restaurant_dict[restaurant["name"]] = restaurant.get("vicinity", "No address provided")
+        print(restaurant_dict)
 
 if __name__ == "__main__":
+
     main()
