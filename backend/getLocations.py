@@ -32,11 +32,10 @@ def addClassToCSV(df, fileName, count, name, location, coords):
     df.loc[count] = [name, location, coords]
     df.to_csv(fileName, index=False) 
 
-
 def main():
     API_KEY = os.environ.get("FLASK_APP_API_KEY")
     map_client = googlemaps.Client(API_KEY)
-    fileName = "C:\\Users\\yanna\\OneDrive\\Desktop\\MadData2025\\locations.csv"
+    fileName = ".\\locations.csv"
     locsCount = 0
     headers = ["Class", "Location", "Coordinates"]
     restaurant_dict = {}
@@ -60,18 +59,21 @@ def main():
     classes = df["Class"].tolist()
     print(classes)
 
-    for i in range (len(classes) - 1):
-        startLoc = df["Location"].iloc[i]
-        endLoc = df["Location"].iloc[i + 1]
+    print(get_place_location(API_KEY, df["Location"].iloc[1]))
+    
 
-        route_points = polyline.decode(get_route(API_KEY, df["Location"].iloc[i], df["Location"].iloc[i + 1]))
+    # for i in range (len(classes) - 1):
+    #     startLoc = df["Location"].iloc[i]
+    #     endLoc = df["Location"].iloc[i + 1]
 
-        for point in route_points[::2]:
-            point_coord = (point[0], point[1])
-            restaurants_nearby = map_client.places_nearby(location=point_coord, radius=500, type="restaurant")
-            for restaurant in restaurants_nearby['results']:
-                restaurant_dict[restaurant["name"]] = restaurant.get("vicinity", "No address provided")
-        print(restaurant_dict)
+    #     route_points = polyline.decode(get_route(API_KEY, df["Location"].iloc[i], df["Location"].iloc[i + 1]))
+
+    #     for point in route_points[::2]:
+    #         point_coord = (point[0], point[1])
+    #         restaurants_nearby = map_client.places_nearby(location=point_coord, radius=500, type="restaurant")
+    #         for restaurant in restaurants_nearby['results']:
+    #             restaurant_dict[restaurant["name"]] = restaurant.get("vicinity", "No address provided")
+    #     print(restaurant_dict)
 
 if __name__ == "__main__":
 
