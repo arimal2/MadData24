@@ -32,10 +32,15 @@
             </tr>
             {% endfor %}
         </table>
+
+        <form style="text-align: center" action="/" method="POST">
+            <!-- <input type="button" value="Map It"> -->
+            <a href="/map">Map</a>
+        </form>
         {% endif %}
 
         <form style="text-align: center" action="/" method="POST">
-
+            <button onclick="mapit()">Map It</button>
             <input type="text" name="content" id="content">
             <input type="submit" value="Add Task">
         </form>

@@ -25,7 +25,7 @@
             <meta name="viewport" content="width=device-width,
                 initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
             <style>
-                #map_d5f0ceee67c151377860fb5329339820 {
+                #map_44cc54cea90fa5c3ff61ef26b965dabf {
                     position: relative;
                     width: 800.0px;
                     height: 500.0px;
@@ -39,14 +39,14 @@
 <body>
     
     
-            <div class="folium-map" id="map_d5f0ceee67c151377860fb5329339820" ></div>
+            <div class="folium-map" id="map_44cc54cea90fa5c3ff61ef26b965dabf" ></div>
         
 </body>
 <script>
     
     
-            var map_d5f0ceee67c151377860fb5329339820 = L.map(
-                "map_d5f0ceee67c151377860fb5329339820",
+            var map_44cc54cea90fa5c3ff61ef26b965dabf = L.map(
+                "map_44cc54cea90fa5c3ff61ef26b965dabf",
                 {
                     center: [43.099613, -89.5078801],
                     crs: L.CRS.EPSG3857,
@@ -63,7 +63,7 @@
 
         
     
-            var tile_layer_7a707bae4a7ad034648474697b993279 = L.tileLayer(
+            var tile_layer_7d40eb752cd1fb7b9fda16bbe66b940f = L.tileLayer(
                 "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
                 {
   "minZoom": 0,
@@ -80,7 +80,34 @@
             );
         
     
-            tile_layer_7a707bae4a7ad034648474697b993279.addTo(map_d5f0ceee67c151377860fb5329339820);
+            tile_layer_7d40eb752cd1fb7b9fda16bbe66b940f.addTo(map_44cc54cea90fa5c3ff61ef26b965dabf);
+        
+    
+            var marker_216e22d0c387327ea426e58dafb8a4e2 = L.marker(
+                [43.099613, -89.5078801],
+                {
+}
+            ).addTo(map_44cc54cea90fa5c3ff61ef26b965dabf);
+        
+    
+        var popup_c87dd0ade33bd36d6dee02985d004594 = L.popup({
+  "maxWidth": "100%",
+});
+
+        
+            
+                var html_123f44b53b291c3d0b5b86fbf2e07358 = $(`<div id="html_123f44b53b291c3d0b5b86fbf2e07358" style="width: 100.0%; height: 100.0%;"><i>This is a marker</i></div>`)[0];
+                popup_c87dd0ade33bd36d6dee02985d004594.setContent(html_123f44b53b291c3d0b5b86fbf2e07358);
+            
+        
+
+        marker_216e22d0c387327ea426e58dafb8a4e2.bindPopup(popup_c87dd0ade33bd36d6dee02985d004594)
+        ;
+
+        
+    
+    
+            tile_layer_7d40eb752cd1fb7b9fda16bbe66b940f.addTo(map_44cc54cea90fa5c3ff61ef26b965dabf);
         
 </script>
 </html>
