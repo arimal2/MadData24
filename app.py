@@ -7,30 +7,41 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db' # 3 fslash = relative path, 4 is absolute. We want this to reside in project location
 db = SQLAlchemy(app)
 
-class Todo(db.Model):
+class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(200), nullable=False)
-    date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    name = db.Column(db.String(200), nullable=False)
+    startTime = db.Column(db.DateTime)
+    endTime = db.Column(db.DateTime)
+    location = db.Column(db.String(200), nullable=False)
     
     def __repr__(self):
-        return '<Task %r>' % self.id
+        return '<Event %r>' % self.id
 
-
+# to add an event to the schedule
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if request.method == 'POST':
-        task_content = request.form['content']
-        new_task = Todo(content=task_content)
+        event_name = request.form['name']
+        event_location = request.form['location']
+
+        time_str = request.form['startTime']
+        event_startTime = datetime.strptime(time_str, '%H:%M')
+        
+        time_str = request.form['endTime']
+        event_endTime = datetime.strptime(time_str, '%H:%M')
+
+        new_event = Event(name=event_name, location=event_location, startTime=event_startTime, endTime = event_endTime)
         
         try:
-            db.session.add(new_task)
+            db.session.add(new_event)
             db.session.commit()
             return redirect('/')
         except:
-            return 'There was an issue adding your task'
+            return 'There was an issue adding your event.'
     else:
-        tasks = Todo.query.order_by(Todo.date_created).all()
-        return render_template('index.html', tasks=tasks)
+        events = Event.query.order_by(Event.startTime).all()
+        return render_template('index.html', events=events)
+
 
 @app.route('/delete/<int:id>')
 def delete(id):

@@ -41,7 +41,7 @@ def main():
         name = input("Enter a class name (or 'quit' to finish): ") 
         if name.lower() == "quit":
             break
-        loc = input(f"Enter the location forH {name}: ")
+        loc = input(f"Enter the location for H {name}: ")
         coords = get_place_location(API_KEY, loc)
         if coords is None:
             print("Error: location not found")
