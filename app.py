@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
+import folium
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 
@@ -14,6 +15,21 @@ class Todo(db.Model):
     def __repr__(self):
         return '<Task %r>' % self.id
     
+    
+@app.route('/')
+def home():
+    #Create map object
+    mapObj = folium.Map(location=[43.099613, -89.5078801],
+                     zoom_start=9, width=800, height=500)
+
+    #add marker to map object
+    folium.Marker([43.099613, -89.5078801], 
+                  popup="<i>This is a marker</i>").add_to(mapObj)
+    #render map obj
+    mapObj.get_rcot().render()
+    
+    #derive script and style tags to be rendered in HTML head
+    header = mapObj.get_root().header.render()
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
