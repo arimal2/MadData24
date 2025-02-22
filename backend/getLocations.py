@@ -2,7 +2,6 @@ import googlemaps  # pip install googlemaps
 import requests
 import polyline
 import pandas as pd
-
 from dotenv import load_dotenv
 import os
 
@@ -35,7 +34,7 @@ def addClassToCSV(df, fileName, count, name, location, coords):
 
 
 def main():
-    API_KEY = os.enviorn.get("FLASK_APP_API_KEY")
+    API_KEY = os.environ.get("FLASK_APP_API_KEY")
     map_client = googlemaps.Client(API_KEY)
     fileName = "C:\\Users\\yanna\\OneDrive\\Desktop\\MadData2025\\locations.csv"
     locsCount = 0
