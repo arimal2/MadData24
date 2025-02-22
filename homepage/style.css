@@ -1,0 +1,45 @@
+.cover {
+    background-color: #7a65ff;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .cover .div {
+    background-color: var(--color-purple);
+    width: 1920px;
+    height: 960px;
+    position: relative;
+  }
+  
+  .cover .overlap-group {
+    position: absolute;
+    width: 960px;
+    height: 960px;
+    top: 0;
+    left: 960px;
+    background-color: var(--color-purewhite);
+  }
+  
+  .cover .image {
+    position: absolute;
+    width: 800px;
+    height: 960px;
+    top: 0;
+    left: 0;
+    object-fit: cover;
+  }
+  
+  .cover .weekly-schedule {
+    position: absolute;
+    width: 640px;
+    top: 257px;
+    left: 260px;
+    font-family: "Chivo-Bold", Helvetica;
+    font-weight: 700;
+    color: var(--color-purewhite);
+    font-size: 130px;
+    letter-spacing: 0.52px;
+    line-height: 148px;
+  }
