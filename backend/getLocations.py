@@ -3,6 +3,11 @@ import requests
 import polyline
 import pandas as pd
 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 def get_route(api_key, origin, destination):
     url = f"https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&key={api_key}"
     response = requests.get(url)
@@ -30,7 +35,7 @@ def addClassToCSV(df, fileName, count, name, location, coords):
 
 
 def main():
-    API_KEY = "AIzaSyBLM_O7mDQ3QxDWRK8rO6L4o-wlgii27k0"
+    API_KEY = os.enviorn.get("FLASK_APP_API_KEY")
     map_client = googlemaps.Client(API_KEY)
     fileName = "C:\\Users\\yanna\\OneDrive\\Desktop\\MadData2025\\locations.csv"
     locsCount = 0
