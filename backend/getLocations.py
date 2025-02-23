@@ -32,14 +32,22 @@ def addClassToCSV(df, fileName, count, name, location, coords):
     df.loc[count] = [name, location, coords]
     df.to_csv(fileName, index=False) 
 
+def addNearbyLocationsToCSV(df, fileName, start_loc, end_loc, nearby_dict, count):
+    df.loc[count] = [start_loc, end_loc, nearby_dict]
+    df.to_csv(fileName, index=False) 
+
 def main():
     API_KEY = os.environ.get("FLASK_APP_API_KEY")
     map_client = googlemaps.Client(API_KEY)
     fileName = ".\\locations.csv"
+    fileName2 = ".\\nearbyLocations.csv"
     locsCount = 0
+    nearByCount = 0
     headers = ["Class", "Location", "Coordinates"]
+    headers2 = ["Start Location", "End Location", "Places Nearby"]
     restaurant_dict = {}
     df = pd.DataFrame(columns=headers) 
+    dfNearby = pd.DataFrame(columns=headers2)
     
 
     quit = False
@@ -73,7 +81,9 @@ def main():
             restaurants_nearby = map_client.places_nearby(location=point_coord, radius=500, type="restaurants")
             for restaurant in restaurants_nearby['results']:
                 restaurant_dict[restaurant["name"]] = restaurant.get("vicinity", "No address provided")
-        print(restaurant_dict)
+        print("HEY")
+        addNearbyLocationsToCSV(dfNearby, fileName2, startLoc, endLoc, restaurant_dict, nearByCount)
+
 
 if __name__ == "__main__":
     main()

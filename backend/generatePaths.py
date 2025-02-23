@@ -18,17 +18,24 @@ class GeneratePaths:
     def __init__(self):
         global API_KEY
         global name_count
-        global df
+        global nearby_count
+        global dfClass
+        global dfNearby
         global fileName
+        global fileName2
 
         API_KEY = os.environ.get("FLASK_APP_API_KEY")
         # this will count for the .csv file where to put the next line
         name_count = 0
-        # creating the data frame with it's three headers
-        headers = ["Class", "Location", "Coordinates"]
-        df = pd.DataFrame(columns=headers) 
+        nearby_count = 0
+        # creating the data frames with it's three headers
+        headers1 = ["Class", "Location", "Coordinates"]
+        dfClass = pd.DataFrame(columns=headers1) 
+        headers2 = ["Start Class", "End Class", "Nearby Places"]
+        dfNearby = pd.DataFrame(columns=headers2) 
         # the file we're printing to
         fileName = ".\\locations.csv"
+        fileName2 = ".\\nearbyLocations.csv"
 
     # Generate the route between 2 locations (addresses)
     # parameters:
@@ -37,8 +44,8 @@ class GeneratePaths:
     # return: 
     # - a list of coordinates (list of list) of generated points between origin and destination
     # - None if couldn't generate route between origin and destination
-    def getRoute(self, origin, destination):
-        url = f"https://maps.googleapis.com/maps/api/directions/json?origin={origin}&destination={destination}&key={API_KEY}"
+    def getRoute(self, start_loc, end_loc):
+        url = f"https://maps.googleapis.com/maps/api/directions/json?origin={start_loc}&destination={end_loc}&key={API_KEY}"
         response = requests.get(url)
         data = response.json()
 
@@ -75,9 +82,9 @@ class GeneratePaths:
     def addClassToCSV(self, class_name, location, coords):
         try:
             if (fileName.endswith(".csv")):
-                df.loc[name_count] = [class_name, location, coords]
-                nameCount += 1
-                df.to_csv(fileName, index=False)
+                dfClass.loc[name_count] = [class_name, location, coords]
+                name_count += 1
+                dfClass.to_csv(fileName, index=False)
                 return True
             else:
                 return False
@@ -93,31 +100,53 @@ class GeneratePaths:
     # return:
     # - a dictionary of resturant names and their location
     # - None if any issues or if there are no resturants between locations
-def generateNearByDict(self, start_loc, end_loc, type, meters):
-    restaurant_dict = {}
-    map_client = googlemaps.Client(API_KEY)
+    def generateNearByDict(self, start_loc, end_loc, type, meters):
+        nearby_dict = {}
+        map_client = googlemaps.Client(API_KEY)
 
-    # generating a route from start location to end location
-    route_points = self.getRoute(API_KEY, start_loc, end_loc)
+        # generating a route from start location to end location
+        route_points = self.getRoute(API_KEY, start_loc, end_loc)
 
-    # if problem occured generating route None is returned
-    if not route_points:
-        return None
-
-    # traversing through every other point generated in route
-    for point in route_points[::2]:
-        point_coord = (point[0], point[1])
-        try:
-            # finding places nearby given point
-            restaurants_nearby = map_client.places_nearby(location=point_coord, radius=meters, type=type)
-            # adding all nearby areas of point to dictionary (repeats get overriden)
-            for restaurant in restaurants_nearby.get('results', []):
-                restaurant_dict[restaurant["name"]] = restaurant.get("vicinity", "No address provided")
-        except:
+        # if problem occured generating route None is returned
+        if not route_points:
             return None
 
-    # if there are nearby places to go None is returned
-    if (restaurant_dict):
-        return restaurant_dict
-    else:
-        return None
+        # traversing through every other point generated in route
+        for point in route_points[::2]:
+            point_coord = (point[0], point[1])
+            try:
+                # finding places nearby a given point
+                places_nearby = map_client.places_nearby(location=point_coord, radius=meters, type=type)
+                # adding all nearby areas of point to dictionary (repeats get overriden)
+                for place_nearby in places_nearby.get('results', []):
+                    if place_nearby["name"] not in nearby_dict:
+                        nearby_dict[place_nearby["name"]] = place_nearby.get("vicinity", "No address provided")
+            except:
+                return None
+
+        # if there are nearby places to go None is returned
+        if (nearby_dict):
+            return nearby_dict
+        else:
+            return None
+        
+    
+    # Adds start and end locations and nearby dictionary to specified CSV filename using a data frame (pandas)
+    # parameters:
+    # - start_name: start class
+    # - end_name: end class
+    # - nearby_dict: dictionary of all nearby classes
+    # return:
+    # - True if added to file
+    # - False if something went wrong and not added to file
+    def addNearByToCSV(self, start_name, end_name, nearby_dict):
+        try:
+            if (fileName2.endswith(".csv")):
+                dfNearby.loc[nearby_count] = [start_name, end_name, nearby_dict]
+                nearby_count += 1
+                dfNearby.to_csv(fileName2, index=False)
+                return True
+            else:
+                return False
+        except:
+            return False
