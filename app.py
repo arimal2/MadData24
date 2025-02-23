@@ -31,6 +31,9 @@ def index():
         event_name = request.form['name'] #get event name from user input
         event_location = request.form['location']
 
+        if(backend.getRoute(event_location, event_location) == None):
+            return "Location could not be found" #location violation
+
         start_str = request.form['startTime'] #get event start time from user input
         event_startTime = datetime.strptime(start_str, '%H:%M')
         
@@ -78,12 +81,12 @@ def update(id):
 
     #if form submission was successful
     if request.method == 'POST': 
-        
+
         if (request.form['name'] != ""):
             event.name = request.form['name'] #if new name is not empty string, update event name
 
-        if (request.form['location'] != ""):
-            event.location = request.form['location'] #if new location is not empty string, update event location
+        if (request.form['location'] != "" and (backend.getRoute(request.form['location'], request.form['location']) != None)):
+            event.location = request.form['location'] #if new location is not empty string or invalid location, update event location
         
         time_str = request.form['startTime']
         if (time_str != ""):
