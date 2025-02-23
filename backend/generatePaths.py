@@ -32,7 +32,7 @@ class GeneratePaths:
         # creating the data frames with it's three headers
         headers1 = ["Class", "Location", "Coordinates"]
         dfClass = pd.DataFrame(columns=headers1) 
-        headers2 = ["Start Class", "End Class", "Nearby Places"]
+        headers2 = ["Type", "Start Class", "End Class", "Nearby Places"]
         dfNearby = pd.DataFrame(columns=headers2) 
         # the file we're printing to
         fileName = ".\\locations.csv"
@@ -140,10 +140,10 @@ class GeneratePaths:
     # return:
     # - True if added to file
     # - False if something went wrong and not added to file
-    def addNearByToCSV(self, start_name, end_name, nearby_dict):
+    def addNearByToCSV(self, start_name, end_name, nearby_dict, type):
         try:
             if (fileName2.endswith(".csv")):
-                dfNearby.loc[nearby_count] = [start_name, end_name, nearby_dict]
+                dfNearby.loc[nearby_count] = [type, start_name, end_name, nearby_dict]
                 nearby_count += 1
                 dfNearby.to_csv(fileName2, index=False)
                 return True
@@ -151,3 +151,57 @@ class GeneratePaths:
                 return False
         except:
             return False
+    
+    # Generates a tuple of coordinates from start to end location and the most efficent route between them
+    # each tuple is from a location to another location
+    # parameters
+    # - locations_list: the list of locations (first index = start, last index = end)
+    # return:
+    # - tuple in order from start location to end (shotest path)
+    # - None if something went wrong
+    def getShortestPath(self, locations_list):
+        if not isinstance(locations_list, list):
+            raise ValueError("locations_list must be a list.")
+
+        # checking for amount
+        if (len(locations_list) < 1):
+            return None
+        start_location = locations_list[0]
+        if (len(locations_list) == 1):
+            return self.getCoords(start_location)
+        end_location = locations_list[-1]
+        if (len(locations_list) == 2):
+            return self.getRoute(start_location, end_location)
+
+        # remoivng all start and end points
+        waypoints = locations_list[1:-1] 
+
+        url = f"https://maps.googleapis.com/maps/api/directions/json?origin={start_location}&destination={end_location}&waypoints=optimize:true|{'|'.join(waypoints)}&key={API_KEY}"
+        response = requests.get(url)
+        data = response.json()
+
+        if data['status'] == 'OK':
+            path_names = []
+            path_routes = []
+            try:
+                # getting the order of the path
+                path_names.append(start_location)
+                # all middle points
+                for waypoint in waypoints:
+                    path_names.append(waypoint)
+                path_names.append(end_location)
+
+                # finding route between paths
+                for i in range(len(path_names) - 1):
+                    route = self.getRoute(path_names[i], path_names[i + 1])
+                    if route is not None:
+                        path_routes.append(route)
+                    else:
+                        return None
+
+                return path_routes
+            
+            except:
+                return None
+        else:
+            return None
