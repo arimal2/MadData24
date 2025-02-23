@@ -48,7 +48,10 @@ def index():
         event_name = request.form.get('name', '') #get event name from user input
         event_location = request.form.get('location', '')
 
-        start_str = request.form.get('startTime', '') #get event start time from user input
+        if(backend.getRoute(event_location, event_location) == None):
+            return "Location could not be found" #location violation
+
+        start_str = request.form['startTime'] #get event start time from user input
         event_startTime = datetime.strptime(start_str, '%H:%M')
         
         end_str = request.form.get('endTime', '') #get event end time from user input
@@ -95,12 +98,12 @@ def update(id):
 
     #if form submission was successful
     if request.method == 'POST': 
-        
+
         if (request.form['name'] != ""):
             event.name = request.form['name'] #if new name is not empty string, update event name
 
-        if (request.form['location'] != ""):
-            event.location = request.form['location'] #if new location is not empty string, update event location
+        if (request.form['location'] != "" and (backend.getRoute(request.form['location'], request.form['location']) != None)):
+            event.location = request.form['location'] #if new location is not empty string or invalid location, update event location
         
         time_str = request.form['startTime']
         if (time_str != ""):
@@ -197,7 +200,7 @@ def study_spots(id):
 
     #if last class, return 
     if index == len(events) - 1: 
-        return "Go anywhere: the world is your oyster"
+        return render_template('oyster.html')
     
     #otherwise, generate list of study spots 
     else: 
