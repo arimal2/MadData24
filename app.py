@@ -4,7 +4,6 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 from backend.generatePaths import GeneratePaths
 from dotenv import load_dotenv
-from flask_wtf import FlaskForm
 import logging
 
 #  app.logger.debug(f"{var}")  # Debugging line
