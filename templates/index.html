@@ -65,8 +65,18 @@
                 </tbody>
             </table>
             {% endif %}
-
         </div>
+    <html>
+        <head></head>
+        <body>
+            <form method="POST" style="text-align: center;">
+                <label for="slider">Range (meters): <b>{{ slider_value }}</b></label>
+                <input type="range" name="slider" min="{{ min_val }}" max="{{ max_val }}" value="{{ slider_value }}">
+                <br><br>
+                <button type="submit">Set</button>
+            </form>
+        </body>
+    </html>
 </div>
 
 {% endblock %}
