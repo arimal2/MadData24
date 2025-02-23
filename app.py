@@ -104,6 +104,19 @@ def map():
                      zoom_start=9, width=800, height=500)
 
     #add marker to map object
+    
+    event1 = Event.query.order_by(Event.startTime).first()
+    print("----------------------------------")
+    print("----------------------------------")
+    print("----------------------------------")
+    print(event1.location)
+
+    print(backend.getCoords(event1.location))
+    print("----------------------------------")
+    print("----------------------------------")
+    print("----------------------------------")
+
+    
     folium.Marker([43.099613, -89.5078801], 
                   popup="<i>This is a marker</i>").add_to(mapObj)
     #render map obj
