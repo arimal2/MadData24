@@ -96,47 +96,45 @@ def update(id):
     else:
         return render_template('update.html', event=event)
 
-
-@app.route('/map')
+@app.route('/map', methods=["GET", "POST"])
 def map():
 
-    #Create map object
-    mapObj = folium.Map(location=[43.099613, -89.5078801],
-                     zoom_start=9, width=800, height=500)
+    if request.method == "POST": 
+        checked = request.form.getlist("checked")
 
-    #add marker to map object
-    event = Event.query.order_by(Event.startTime).first()
-    coords = backend.getCoords(event.location)
-    name = event.location
-    folium.Marker(coords, 
-                  popup=name).add_to(mapObj)
-    #render map obj
-    mapObj.get_root().render()
+        #Create map object
+        mapObj = folium.Map(location=[43.0757, -89.4040],
+                        zoom_start=15, width=800, height=500)
+
+        #for each location add a marker to map object 
+        for check in checked: 
+            coords = backend.getCoords(check)
+            name = check
+            folium.Marker(coords, 
+                        popup=name).add_to(mapObj)
+        #render map obj
+        mapObj.get_root().render()
+        
+        #derive script and style tags to be rendered in HTML head
+        header = mapObj.get_root().header.render()
+
+        #derive the div container to be rendered in the HTML body
+        body_html = mapObj.get_root().html.render()
+
+        #save as HTML file
+        mapObj.save("./templates/output.html")
+
+        return render_template("output.html")
     
-    #derive script and style tags to be rendered in HTML head
-    header = mapObj.get_root().header.render()
-
-    #derive the div container to be rendered in the HTML body
-    body_html = mapObj.get_root().html.render()
-
-    #save as HTML file
-    mapObj.save("./templates/output.html")
-
-    return render_template("output.html")
-
-
-blocks_page = """<html><body><div style="rectangle" width: {{ size }}px"></div></body></html>"""
-
-@app.route('/display/<int:id>')
-def display(id):
-    event = Event.query.get_or_404(id)
+    else:
+        return "Sorry, you have to check something"
     
-    return render_template_string(blocks_page, size=event.startTime)
 
 @app.route('/study_spots/<int:id>')
 def study_spots(id):
     #use backend func to get list of libraries 
     events = Event.query.order_by(Event.startTime).all()
+
     index = events.index(Event.query.get_or_404(id))
 
     if index == len(events) - 1: 
