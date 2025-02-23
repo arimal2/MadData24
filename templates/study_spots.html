@@ -8,14 +8,14 @@
 <div class="content">
     <h1>Study Spots</h1>
     <div style="text-align: center" class="form">
-        <form action="/" method="post">
+        <form action="/map" method="POST">
             <!-- populate list from backend func -->
             <ul>
                 {% for location in locations %}
-                <li>{{ location }} <input type="checkbox"></li>
+                <li>{{ location }} <input type="checkbox" name="checked" value="{{location}}"></li>
                 {%endfor%}
             </ul>
-            <a href="/map"> Map It</a>
+            <input type="submit" value="Map It">
         </form>
     </div>
 </div>
