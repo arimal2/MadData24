@@ -137,7 +137,7 @@ def study_spots(id):
 
     index = events.index(Event.query.get_or_404(id))
 
-    if index == len(events) - 1: 
+    if index == len(events) - 1:
         return "Go anywhere: the world is your oyster"
     
     else: 

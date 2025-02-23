@@ -1,12 +1,12 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Scheduler</title>
+<title>Oh, the Places You'll Go</title>
 {% endblock %}
 
 {% block body %}
 <div class="content">
-    <h1 style="text-align: center">Scheduler</h1>
+    <h1 style="text-align: center">Oh, the Places You'll Go!</h1>
     {% if events|length < 1 %} <h4 style="text-align: center">Create an event below!</h4>
         <table class="styled-table">
             <form style="text-align: center" action="/" method="POST">
@@ -41,13 +41,20 @@
                         <td>{{ event.startTime.time() }}</td>
                         <td>{{ event.endTime.time() }}</td>
                         <td>
-                            <a href="/delete/{{event.id}}">Delete</a>
-                            <br>
-                            <a href="/update/{{event.id}}">Update</a>
-                            <br>
-                            <a href="/study_spots/{{event.id}}">Study Spots</a>
-                            <br>
-                            <a href="/food_spots/{{event.id}}">Food Spots</a>
+                            <div class="parentDiv">
+                                <a class="icon-trash" style="color: Tomato;" href="/delete/{{event.id}}"><i
+                                        class="fa-solid fa-trash" style='font-size:24px'></i></a>
+                                <br>
+                                <a class="icon-edit" style="color: Tomato;" href="/update/{{event.id}}"><i
+                                        class='fas fa-edit' style='font-size:24px'></i>
+                                </a>
+                                <br>
+                                <a class="icon-book" style="color: Tomato;" href="/study_spots/{{event.id}}"><i
+                                        class="fa-solid fa-book" style='font-size:24px'></i></a>
+                                <br>
+                                <a class="icon-cheese" style="color: #FFC300; " href="/food_spots/{{event.id}}"><i
+                                        class="fas fa-cheese" style='font-size:24px'></i></a>
+                            </div>
                         </td>
                     </tr>
                     {% endfor %}
