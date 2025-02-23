@@ -44,6 +44,10 @@
                             <a href="/delete/{{event.id}}">Delete</a>
                             <br>
                             <a href="/update/{{event.id}}">Update</a>
+                            <br>
+                            <a href="/study_spots/{{event.id}}">Study Spots</a>
+                            <br>
+                            <a href="/food_spots/{{event.id}}">Food Spots</a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -60,11 +64,6 @@
                     </tr>
                 </tbody>
             </table>
-
-            <form style="text-align: center" action="/" method="POST">
-                <a href="/study_spots" class="button">Study Spots</a>
-                <a href="/food_spots" class="button">Food Spots</a>
-            </form>
             {% endif %}
 
         </div>
