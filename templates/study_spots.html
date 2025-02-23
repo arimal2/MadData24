@@ -12,14 +12,12 @@
             <!-- populate list from backend func -->
             <!-- {% for location in libraries %}
 
-            
              <input type="checkbox" id="id" name="location" value="Opetion 1"><br>
              {% endfor %} -->
 
             <ul>
-                {% for location in locations%}
-                <li>
-                    <input type="checkbox" {{ location["name"] }}>
+                {% for location in locations %}
+                <li>{{ location }} <input type="checkbox"></li>
                 {%endfor%}
             </ul>
             <a href="/map"> Map It</a>

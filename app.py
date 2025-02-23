@@ -99,13 +99,16 @@ def update(id):
 
 @app.route('/map')
 def map():
+
     #Create map object
     mapObj = folium.Map(location=[43.099613, -89.5078801],
                      zoom_start=9, width=800, height=500)
 
     #add marker to map object
-    folium.Marker([43.099613, -89.5078801], 
-                  popup="<i>This is a marker</i>").add_to(mapObj)
+    event = Event.query.order_by(Event.startTime).first()
+    coords = backend.getCoords(event.location)
+    folium.Marker(coords, 
+                  popup="<i>Mem U</i>").add_to(mapObj)
     #render map obj
     mapObj.get_root().render()
     
@@ -133,7 +136,8 @@ def display(id):
 def study_spots():
     #use backend func to get list of libraries 
     events = Event.query.order_by(Event.startTime).all()
-    locations = backend.generateNearByDict("Union South", "Memorial Union", "library", 500) #500m = 7 min walk 
+    keys = backend.generateNearByDict("Union South", "Memorial Union", "library", 500) #500m = 7 min walk 
+    locations=list(locations.keys())
 
     return render_template('study_spots.html', locations=locations)
 
