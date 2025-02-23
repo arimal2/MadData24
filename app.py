@@ -7,6 +7,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db' # 3 fslash = relative path, 4 is absolute. We want this to reside in project location
 db = SQLAlchemy(app)
 
+
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(200), nullable=False)
@@ -24,14 +25,23 @@ def index():
         event_name = request.form['name']
         event_location = request.form['location']
 
-        time_str = request.form['startTime']
-        event_startTime = datetime.strptime(time_str, '%H:%M')
+        start_str = request.form['startTime']
+        event_startTime = datetime.strptime(start_str, '%H:%M')
         
-        time_str = request.form['endTime']
-        event_endTime = datetime.strptime(time_str, '%H:%M')
-
+        end_str = request.form['endTime']
+        
+        if start_str > end_str:
+            return "start time cannot be after end time"
+        
+        event_endTime = datetime.strptime(end_str, '%H:%M')
+        
+        events = Event.query.order_by(Event.startTime).all()
         new_event = Event(name=event_name, location=event_location, startTime=event_startTime, endTime = event_endTime)
-        
+
+        if (len(events) > 0):
+            if events[len(events) - 1].endTime > new_event.startTime:
+                return "Start time conflicts with previous end time"
+            
         try:
             db.session.add(new_event)
             db.session.commit()
