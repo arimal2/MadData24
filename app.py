@@ -149,8 +149,20 @@ def study_spots(id):
 
 @app.route('/food_spots/<int:id>')
 def food_spots(id):
+
     #use backend func to get list of restaurants  
-    return render_template('food_spots.html')
+    events = Event.query.order_by(Event.startTime).all()
+    index = events.index(Event.query.get_or_404(id))
+
+    #if event is last in schedule 
+    if index == len(events) - 1: 
+        return "Go anywhere: the world is your oyster"
+    
+    else: 
+        temp = backend.generateNearByDict(events[index].location, events[index + 1].location, "restaurant", 500) #500m = 7 min walk
+        locations=list(temp.keys())
+
+    return render_template('food_spots.html', locations=locations)
 
 if __name__ == '__main__':
     app.run(debug=True)
