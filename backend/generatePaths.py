@@ -88,6 +88,7 @@ class GeneratePaths:
     # parameters:
     # - start_loc: starting location
     # - end_loc: end location
+    # - type: the type of places you want
     # - meters: the vicinity (meters) of places you can find
     # return:
     # - a dictionary of resturant names and their location
