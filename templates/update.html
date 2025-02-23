@@ -1,20 +1,26 @@
 {% extends 'base.html' %}
 
 {% block head %}
-<title>Task Master</title>
+<title>Scheduler</title>
 {% endblock %}
 
 {% block body %}
 <div class="content">
-    <h1 style="text-align: center">Update Task</h1>
-
-
+    <h1 style="text-align: center">Update Event</h1>
     <div style="text-align: center" class="form">
-        <form action="/update/{{task.id}}" method="POST">
+        <table class="styled-table">
+            <form action="/update/{{event.id}}" method="POST">
+                <td><input type="text" placeholder="edit name" name="name" id="name" , value={{event.name}}></td>
+                <td><input type="text" placeholder="edit location" name="location" id="location" ,
+                        value={{event.location}}>
+                </td>
+                <td><input type="time" name="startTime" id="startTime" , value={{event.startTime}}></td>
+                <td><input type="time" name="endTime" id="endTime" , value={{event.startTime}}></td>
 
-            <input type="text" name="content" id="content", value="{{task.content}}">
-            <input type="submit" value="Update">
-        </form>
+                <td><input type="submit" value="Update"></td>
+
+            </form>
+        </table>
     </div>
 </div>
 {% endblock %}

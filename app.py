@@ -45,34 +45,48 @@ def index():
 
 @app.route('/delete/<int:id>')
 def delete(id):
-    task_to_delete = Todo.query.get_or_404(id)
+    event_to_delete = Event.query.get_or_404(id)
     
     try:
-        db.session.delete(task_to_delete)
+        db.session.delete(event_to_delete)
         db.session.commit()
         return redirect('/')
 
     except:
-        return 'Problem deleting that task.'
+        return 'Problem deleting that event.'
     
 @app.route('/update/<int:id>', methods=['GET', 'POST'])
 def update(id):
-    task = Todo.query.get_or_404(id)
+    event = Event.query.get_or_404(id)
 
     if request.method == 'POST':
-        task.content = request.form['content']
         
+        if (request.form['name'] != ""):
+            event.name = request.form['name']
+        event.location = request.form['location']
+
+        if (request.form['name'] != ""):
+            time_str = request.form['startTime']
+        
+        if (time_str != ""):
+            event.startTime = datetime.strptime(time_str, '%H:%M')
+        
+        time_str = request.form['endTime']
+        
+        if (time_str != ""):
+            event.endTime = datetime.strptime(time_str, '%H:%M')
+
         try:
             db.session.commit()
             return redirect('/')
         except:
-            return "Couldn't update task."
+            return "Couldn't update event."
     else:
-        return render_template('update.html', task=task)
+        return render_template('update.html', event=event)
 
 
 @app.route('/map')
-def Map():
+def map():
     #Create map object
     mapObj = folium.Map(location=[43.099613, -89.5078801],
                      zoom_start=9, width=800, height=500)
@@ -93,6 +107,25 @@ def Map():
     mapObj.save("./templates/output.html")
 
     return render_template("output.html")
+
+
+blocks_page = """<html><body><div style="rectangle" width: {{ size }}px"></div></body></html>"""
+
+@app.route('/display/<int:id>')
+def display(id):
+    event = Event.query.get_or_404(id)
+    
+    return render_template_string(blocks_page, size=event.startTime)
+
+@app.route('/study_spots')
+def study_spots():
+    #use backend func to get list of libraries 
+    return render_template('study_spots.html')
+
+@app.route('/food_spots')
+def food_spots():
+    #use backend func to get list of restaurants  
+    return render_template('food_spots.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
