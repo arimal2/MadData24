@@ -10,9 +10,11 @@
     <div style="text-align: center" class="form">
         <form action="/food_spots" method="post"> 
             <!-- populate list from backend func -->
-            <!-- {% for location in restaurants %}
-             <input type="checkbox" id="id" name="location" value="Option 1"><br>
-             {% endfor %} -->
+            <ul>
+                {% for location in locations %}
+                <li>{{ location }} <input type="checkbox"></li>
+                {%endfor%}
+            </ul>
              <a href="/map"> Map It</a>
         </form>
     </div>
