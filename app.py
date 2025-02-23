@@ -86,7 +86,7 @@ def update(id):
 
 
 @app.route('/map')
-def Map():
+def map():
     #Create map object
     mapObj = folium.Map(location=[43.099613, -89.5078801],
                      zoom_start=9, width=800, height=500)
@@ -116,6 +116,16 @@ def display(id):
     event = Event.query.get_or_404(id)
     
     return render_template_string(blocks_page, size=event.startTime)
+
+@app.route('/study_spots')
+def study_spots():
+    #use backend func to get list of libraries 
+    return render_template('study_spots.html')
+
+@app.route('/food_spots')
+def food_spots():
+    #use backend func to get list of restaurants  
+    return render_template('food_spots.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
