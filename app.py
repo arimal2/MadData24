@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, render_tem
 import folium
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
+from backend import generatePaths
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db' # 3 fslash = relative path, 4 is absolute. We want this to reside in project location
@@ -120,7 +121,10 @@ def display(id):
 @app.route('/study_spots')
 def study_spots():
     #use backend func to get list of libraries 
-    return render_template('study_spots.html')
+    events = Event.query.order_by(Event.startTime).all()
+    locations = generatePaths.generateNearByDict(events[0].name, events[1].name, "library", 500) #500m = 7 min walk 
+
+    return render_template('study_spots.html', locations=locations)
 
 @app.route('/food_spots')
 def food_spots():
