@@ -103,6 +103,7 @@ def update(id):
 
 @app.route('/map', methods=["GET", "POST"])
 def map():
+
     if request.method == "POST": 
         checked = request.form.getlist("checked") #get checked locations from user submission 
 
@@ -138,6 +139,7 @@ def map():
 def study_spots(id):
     #use backend func to get list of libraries 
     events = Event.query.order_by(Event.startTime).all()
+
     index = events.index(Event.query.get_or_404(id))
 
     #if last class, return 
