@@ -105,7 +105,7 @@ class GeneratePaths:
         map_client = googlemaps.Client(API_KEY)
 
         # generating a route from start location to end location
-        route_points = self.getRoute(API_KEY, start_loc, end_loc)
+        route_points = self.getRoute(start_loc, end_loc)
 
         # if problem occured generating route None is returned
         if not route_points:

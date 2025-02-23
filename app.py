@@ -133,7 +133,7 @@ def display(id):
 def study_spots():
     #use backend func to get list of libraries 
     events = Event.query.order_by(Event.startTime).all()
-    locations = backend.generateNearByDict(events[0].name, events[1].name, "library", 500) #500m = 7 min walk 
+    locations = backend.generateNearByDict("Union South", "Memorial Union", "library", 500) #500m = 7 min walk 
 
     return render_template('study_spots.html', locations=locations)
 
