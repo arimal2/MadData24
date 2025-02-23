@@ -2,12 +2,13 @@ from flask import Flask, render_template, request, redirect, url_for, render_tem
 import folium
 from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from backend import generatePaths
+from backend.generatePaths import GeneratePaths
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db' # 3 fslash = relative path, 4 is absolute. We want this to reside in project location
 db = SQLAlchemy(app)
 
+backend = GeneratePaths()
 
 class Event(db.Model):
     id = db.Column(db.Integer, primary_key=True)
