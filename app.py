@@ -107,8 +107,9 @@ def map():
     #add marker to map object
     event = Event.query.order_by(Event.startTime).first()
     coords = backend.getCoords(event.location)
+    name = event.location
     folium.Marker(coords, 
-                  popup="<i>Mem U</i>").add_to(mapObj)
+                  popup=name).add_to(mapObj)
     #render map obj
     mapObj.get_root().render()
     
@@ -132,17 +133,22 @@ def display(id):
     
     return render_template_string(blocks_page, size=event.startTime)
 
-@app.route('/study_spots')
-def study_spots():
+@app.route('/study_spots/<int:id>')
+def study_spots(id):
     #use backend func to get list of libraries 
     events = Event.query.order_by(Event.startTime).all()
-    keys = backend.generateNearByDict("Union South", "Memorial Union", "library", 500) #500m = 7 min walk 
-    locations=list(locations.keys())
+    index = events.index(Event.query.get_or_404(id))
 
-    return render_template('study_spots.html', locations=locations)
+    if index == len(events) - 1: 
+        return "Go anywhere: the world is your oyster"
+    
+    else: 
+        temp = backend.generateNearByDict(events[index].location, events[index + 1].location, "library", 500) #500m = 7 min walk
+        locations=list(temp.keys())
+        return render_template('study_spots.html', locations=locations)
 
-@app.route('/food_spots')
-def food_spots():
+@app.route('/food_spots/<int:id>')
+def food_spots(id):
     #use backend func to get list of restaurants  
     return render_template('food_spots.html')
 
