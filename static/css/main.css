@@ -6,7 +6,7 @@
 
 html {
     scroll-behavior: smooth;
-  }
+}
 
 :root {
     --font-size-small: 1.8rem;
@@ -31,7 +31,7 @@ html {
 
     --container-max-width: 1180px;
     --container-normal-width: 800px;
-    --container-medium-width: 700px; 
+    --container-medium-width: 700px;
     --container-small-width: 500px;
 
     --gutter-huge: 12rem;
@@ -74,7 +74,7 @@ html {
 }
 
 .styled-table tbody tr {
-    color:red;
+    color: red;
     border-bottom: 1px solid #dddddd;
 }
 
@@ -126,14 +126,10 @@ html {
 }
 
 .icon-cheese {
-    color:#eca93d;
+    color: #eca93d;
     padding: 5px;
 }
 
-
-/* --------------------------------------- */
-/* ----- Basic Setup ----- */
-/* --------------------------------------- */
 
 @font-face {
     font-family: 'Hk Grotesk';
@@ -150,7 +146,8 @@ html {
 }
 
 html {
-    font-size: 62.5%; /* (16/10)*100 = 62.5% => 1rem = 10px */
+    font-size: 62.5%;
+    /* (16/10)*100 = 62.5% => 1rem = 10px */
     box-sizing: border-box;
     scroll-behavior: smooth;
 }
@@ -167,8 +164,8 @@ body {
     font-weight: 400;
     color: var(--white-1);
     line-height: var(--line-height-normal);
-    background:  
-    #9a272b;
+    background:
+        #9a272b;
     overflow-x: hidden;
 }
 
@@ -210,10 +207,6 @@ img {
     object-fit: contain;
     max-width: 100%;
 }
-
-/* --------------------------------------- */
-/* ----- Headlines and Paragraphs ----- */
-/* --------------------------------------- */
 
 h1,
 h2,
@@ -274,14 +267,10 @@ p {
 }
 
 @media(max-width: 900px) {
-    p { 
+    p {
         max-width: var(--container-small-width);
     }
 }
-
-/* --------------------------------------- */
-/* ----- Buttons and Links ----- */
-/* --------------------------------------- */
 
 a {
     color: var(--white);
@@ -291,14 +280,6 @@ a {
     outline: 2px solid transparent;
 }
 
-::-moz-focus-inner {
-    border: 0;
-}
-
-button:focus,
-a:focus {
-    outline: 2px solid var(--red);
-}
 
 body:not(.user-is-tabbing) button:focus,
 body:not(.user-is-tabbing) a:focus {
@@ -315,7 +296,7 @@ body:not(.user-is-tabbing) a:focus {
     padding: 1rem 4.2rem;
     text-decoration: none;
     color: inherit;
-    border: 1px solid  rgb(221, 97, 84);
+    border: 1px solid var(--red);
     font-weight: 400;
 }
 
@@ -339,11 +320,11 @@ body:not(.user-is-tabbing) a:focus {
 .btn:hover::after,
 .btn:focus::after {
     right: 0;
-    background: lightcoral;
+    background: var(--red);
 }
 
 .btn--pink {
-    background: lightcoral;
+    background: var(--red);
     transition: all 0.2s;
 }
 
@@ -392,10 +373,6 @@ body:not(.user-is-tabbing) a:focus {
     padding-left: 1rem;
     font-family: sans-serif;
 }
-
-/* --------------------------------------- */
-/* ----- Navigation ----- */
-/* --------------------------------------- */
 
 .nav {
     display: flex;
@@ -462,8 +439,9 @@ body:not(.user-is-tabbing) a:focus {
 }
 
 .header {
-    background: linear-gradient(rgba(0,0,0, .1), rgba(0,0,0, .4)), 
-        url('../../images/bascom_sunset.jpg');
+    background: linear-gradient(rgba(0, 0, 0, .1), rgba(0, 0, 0, .4)), 
+    url('./images/bascom_sunset.jpg');
+    
     height: 100vh;
     background-size: cover;
     background-position: center;

@@ -3,97 +3,99 @@
 {% block head %}
 <header class="header" role="banner" id="top">
 
-    <div class="row">
-      <nav class="nav" role="navigation">
-        <ul class="nav__items">
-          <li class="nav__item"><a href="#work" class="nav__link">Login</a></li>
-          <li class="nav__item"><a href="#clients" class="nav__link">About</a></li>
-        </ul>
-      </nav>
+  <div class="row">
+    <nav class="nav" role="navigation">
+      <ul class="nav__items">
+        <li class="nav__item"><a href="#work" class="nav__link">Login</a></li>
+        <li class="nav__item"><a href="#about" class="nav__link">About</a></li>
+      </ul>
+    </nav>
+  </div>
+  <div class="header__text-box row">
+    <div class="header__text">
+      <h1 class="heading-primary">
+        <span id="title">Oh, the Places You'll Go</span>
+      </h1>
+      <p>Enter your schedule and we'll do the rest.</p>
+      <a href="#content" class="btn try-it">Try it <i class="fa-solid fa-arrow-down"></i></a>
     </div>
-    <div class="header__text-box row">
-      <div class="header__text">
-        <h1 class="heading-primary">
-          <!-- Replace the following name with your name -->
-          <span>Oh, the places you'll go</span>
-        </h1>
-        <!-- Put a small paragraph about yourself -->
-        <p>Find the best places to take a break with one click.</p>
-        <a href="#content" class="btn try-it">Try it     <i class="fa-solid fa-arrow-down"></i></a>
-      </div>
-    </div>
-  </header>
+  </div>
+
+  <!-- <div>
+    <img src="{{ url_for('static', filename='css/images/bascom.jpg') }}">
+  </div> -->
+
+</header>
 ={% endblock %}
 
 {% block body %}
 <div id="content">
-    {% if events|length < 1 %} <h4 style="text-align: center">Create an event below!</h4>
-        <table class="styled-table">
+  {% if events|length < 1 %} <h4 style="text-align: center">Create an event below!</h4>
+    <table class="styled-table">
+      <form style="text-align: center" action="/" method="POST">
+        <td><input type="text" placeholder="name" name="name" id="name"></td>
+        <td><input type="text" placeholder="location" name="location" id="location"></td>
+        <td><input type="time" name="startTime" id="startTime"></td>
+        <td><input type="time" name="endTime" id="endTime"></td>
+
+        <td><input type="submit" value="Add Event"></td>
+
+      </form>
+    </table>
+
+    {% else %}
+
+    <div style="text-align: center" class="form">
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Location</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        {% for event in events%}
+        <tbody>
+          <tr>
+            <td>{{ event.name }}</td>
+            <td>{{ event.location }}</td>
+            <td>{{ event.startTime.time() }}</td>
+            <td>{{ event.endTime.time() }}</td>
+            <td>
+              <div class="parentDiv">
+                <a class="icon-trash" href="/delete/{{event.id}}"><i class="fa-solid fa-trash"
+                    style='font-size:24px'></i></a>
+                <br>
+                <a class="icon-edit" href="/update/{{event.id}}"><i class='fas fa-edit' style='font-size:24px'></i>
+                </a>
+                <br>
+                <a class="icon-book" href="/study_spots/{{event.id}}"><i class="fa-solid fa-book"
+                    style='font-size:24px'></i></a>
+                <br>
+                <a class="icon-cheese" href="/food_spots/{{event.id}}"><i class="fas fa-cheese"
+                    style='font-size:24px'></i></a>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+          <tr>
             <form style="text-align: center" action="/" method="POST">
-                <td><input type="text" placeholder="name" name="name" id="name"></td>
-                <td><input type="text" placeholder="location" name="location" id="location"></td>
-                <td><input type="time" name="startTime" id="startTime"></td>
-                <td><input type="time" name="endTime" id="endTime"></td>
+              <td><input type="text" placeholder="name" name="name" id="name"></td>
+              <td><input type="text" placeholder="location" name="location" id="location"></td>
+              <td><input type="time" name="startTime" id="startTime"></td>
+              <td><input type="time" name="endTime" id="endTime"></td>
 
-                <td><input type="submit" value="Add Event"></td>
-
+              <td><input type="submit" value="Add Event"></td>
             </form>
-        </table>
 
-        {% else %}
+          </tr>
+        </tbody>
+      </table>
+      {% endif %}
 
-        <div style="text-align: center" class="form">
-            <table class="styled-table">
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Location</th>
-                        <th>From</th>
-                        <th>To</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                {% for event in events%}
-                <tbody>
-                    <tr>
-                        <td>{{ event.name }}</td>
-                        <td>{{ event.location }}</td>
-                        <td>{{ event.startTime.time() }}</td>
-                        <td>{{ event.endTime.time() }}</td>
-                        <td>
-                            <div class="parentDiv">
-                                <a class="icon-trash" href="/delete/{{event.id}}"><i class="fa-solid fa-trash"
-                                        style='font-size:24px'></i></a>
-                                <br>
-                                <a class="icon-edit" href="/update/{{event.id}}"><i class='fas fa-edit'
-                                        style='font-size:24px'></i>
-                                </a>
-                                <br>
-                                <a class="icon-book" href="/study_spots/{{event.id}}"><i class="fa-solid fa-book"
-                                        style='font-size:24px'></i></a>
-                                <br>
-                                <a class="icon-cheese" href="/food_spots/{{event.id}}"><i
-                                        class="fas fa-cheese" style='font-size:24px'></i></a>
-                            </div>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    <tr>
-                        <form style="text-align: center" action="/" method="POST">
-                            <td><input type="text" placeholder="name" name="name" id="name"></td>
-                            <td><input type="text" placeholder="location" name="location" id="location"></td>
-                            <td><input type="time" name="startTime" id="startTime"></td>
-                            <td><input type="time" name="endTime" id="endTime"></td>
-
-                            <td><input type="submit" value="Add Event"></td>
-                        </form>
-
-                    </tr>
-                </tbody>
-            </table>
-            {% endif %}
-
-        </div>
+    </div>
 </div>
 
 {% endblock %}
