@@ -177,7 +177,7 @@ def study_spots(id):
 
     #if last class, return 
     if index == len(events) - 1: 
-        return "Go anywhere: the world is your oyster"
+        return render_template('oyster.html')
     
     #otherwise, generate list of study spots 
     else: 
