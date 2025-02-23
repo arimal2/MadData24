@@ -111,7 +111,7 @@ def map():
     print("----------------------------------")
     print(event1.location)
 
-    print(backend.getCoords(event1.location))
+    print(backend.getCoords("Memorial Union"))
     print("----------------------------------")
     print("----------------------------------")
     print("----------------------------------")
