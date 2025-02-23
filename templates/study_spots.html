@@ -8,12 +8,21 @@
 <div class="content">
     <h1>Study Spots</h1>
     <div style="text-align: center" class="form">
-        <form action="/study_spots" method="post"> 
+        <form action="/study_spots" method="post">
             <!-- populate list from backend func -->
             <!-- {% for location in libraries %}
+
+            
              <input type="checkbox" id="id" name="location" value="Opetion 1"><br>
              {% endfor %} -->
-             <a href="/map"> Map It</a>
+
+            <ul>
+                {% for location in locations%}
+                <li>
+                    <input type="checkbox" {{ location["name"] }}>
+                {%endfor%}
+            </ul>
+            <a href="/map"> Map It</a>
         </form>
     </div>
 </div>
