@@ -62,19 +62,18 @@ def main():
     print(get_place_location(API_KEY, df["Location"].iloc[1]))
     
 
-    # for i in range (len(classes) - 1):
-    #     startLoc = df["Location"].iloc[i]
-    #     endLoc = df["Location"].iloc[i + 1]
+    for i in range (len(classes) - 1):
+        startLoc = df["Location"].iloc[i]
+        endLoc = df["Location"].iloc[i + 1]
 
-    #     route_points = polyline.decode(get_route(API_KEY, df["Location"].iloc[i], df["Location"].iloc[i + 1]))
+        route_points = polyline.decode(get_route(API_KEY, df["Location"].iloc[i], df["Location"].iloc[i + 1]))
 
-    #     for point in route_points[::2]:
-    #         point_coord = (point[0], point[1])
-    #         restaurants_nearby = map_client.places_nearby(location=point_coord, radius=500, type="restaurant")
-    #         for restaurant in restaurants_nearby['results']:
-    #             restaurant_dict[restaurant["name"]] = restaurant.get("vicinity", "No address provided")
-    #     print(restaurant_dict)
+        for point in route_points[::2]:
+            point_coord = (point[0], point[1])
+            restaurants_nearby = map_client.places_nearby(location=point_coord, radius=500, type="restaurants")
+            for restaurant in restaurants_nearby['results']:
+                restaurant_dict[restaurant["name"]] = restaurant.get("vicinity", "No address provided")
+        print(restaurant_dict)
 
 if __name__ == "__main__":
-
     main()
