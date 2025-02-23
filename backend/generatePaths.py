@@ -15,7 +15,7 @@ class GeneratePaths:
 
     # Constructor for GeneratePaths
     # Initializes globals: API_KEY, name_count, df, and fileName
-    def __init__(self, key):
+    def __init__(self):
         global API_KEY
         global name_count
         global nearby_count
@@ -23,8 +23,9 @@ class GeneratePaths:
         global dfNearby
         global fileName
         global fileName2
-
-        API_KEY = key
+        
+        load_dotenv()
+        API_KEY = os.environ.get("FLASK_APP_API_KEY")
         # this will count for the .csv file where to put the next line
         name_count = 0
         nearby_count = 0
